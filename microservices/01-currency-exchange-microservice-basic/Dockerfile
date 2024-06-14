@@ -6,7 +6,8 @@ RUN mvn -f /home/app/pom.xml clean package
 
 # A lightweight image containing JDK 8 runtime, suitable for running Java apps. 
 FROM openjdk:8-jdk-alpine
-VOLUME /tmp
+#volume created inside container to store temp files 
+VOLUME /tmp 
 EXPOSE 8000
 COPY --from=build /home/app/target/*.jar app.jar
 ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar" ]

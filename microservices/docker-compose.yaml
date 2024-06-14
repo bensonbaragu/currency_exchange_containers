@@ -1,0 +1,31 @@
+version: '3.7'
+services: 
+  currency-exchange:
+    image: exchange-image 
+    container_name: exchange-container 
+    build: 
+      context: ./01-currency-exchange-microservice-basic
+    ports:
+      - 8000:8000
+    networks:
+      - currency-network 
+    restart: always 
+
+  currency-conversion:
+    image: conversion-image
+    container_name: conversion-container 
+    build:
+      context: ./02-currency-conversion-microservice-basic
+    ports:
+      - 8100:8100
+    networks:
+      - currency-network 
+    depends_on: 
+      - currency-exchange
+    restart: always 
+    environment:
+      CURRENCY_EXCHANGE_SERVICE_HOST: http://currency-exchange
+
+networks:
+  currency-network: 
+
